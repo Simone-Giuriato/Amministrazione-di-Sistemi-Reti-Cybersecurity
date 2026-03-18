@@ -1,0 +1,92 @@
+##################################################################################################################################################
+# Le directory in cui systemd legge i file unit sono documentate in man:systemd.unit(5).
+# La directory consigliata per le unità utente è ~/.config/systemd/user
+# (sarà sempre questa perchè nei lab non ho privilegi sudo).
+#
+# Per verificare se esiste la directory:
+# ls ~/.config/systemd/user
+#
+# Se non esiste, creala:
+# mkdir -p ~/.config/systemd/user
+#
+# Poi copia il file unit lì:
+# cp ~/large-file-detector/large-file-detector.service ~/.config/systemd/user
+##############################################################################################################################################
+
+
+
+# Nome e cognome: Giuriato Simone
+# Matricola: 197196
+#
+# path: ~/.config/systemd/user/large-file-detector.service
+
+
+# comando per abilitare il servizio: systemctl --user enable large-file-detector.service    (all'inizio sarà disabled, ma con questo diventa enabled. Se c'è bad allora c'è un errore di sintassi)
+# comando per avviare il servizio: systemctl --user start large-file-detector.service
+# [sempre quelli]
+
+
+
+# 3 Sezioni:
+
+#descrive cosa è il servizio (nome programma + service)
+[Unit] 
+Description=Large File Detector Service
+
+
+#descrive come eseguire il servizio
+[Service]  
+
+# python bufferizza e quindi potrei non vedere nulla (non è obbligatorio ma meglio perchè vedo se va)
+Environment=PYTHONUNBUFFERED=1  
+
+# Non obbligatorio, se non lo metto devo mettere il path assoluto in ExecStart. Indica directory di lavoro (dove sta app.py). %h=~=home directory
+WorkingDirectory=/home/simone/Scrivania/Amministrazione_di_sistemi_Reti_Cybersecurity/LAB/deamons/large-file-detector   
+#andrebbe in home, ma qua ho una mia organizzazione del file system. In esame seguire sue indicazioni col path
+
+ExecStart=/usr/bin/python3 app.py --target /home/simone/docs --size 100 --interval 300 --log %h
+# /usr/bin/python3 è il path assoluto dell'interprete Python (obbligatorio in systemd, non puoi scrivere solo "python3"), ho potuto mettere solo app.py perchè ho spceificato la working direcotry [nel dubbio metti sempre il path assoluto]
+# %h si espande nella home directory dell'utente che esegue il servizio, qua non andava NEL DUBBIO METTI SEMPRE PERCORSO ASSOLUTO
+
+# se fallisce, me lo fa ripartire (vincolo della consegna) [riavviarsi in caso di guasto]
+Restart=on-failure  
+
+# systemd aspetta 5 secondi prima di far ripartire (evita loop troppo veloci)
+RestartSec=5        
+
+#descrive quando avviare il servizio
+[Install]
+
+# quando il sistema parte nella modalità di default, fai partire anche questo servizio [avviarsi al boot del sistema]
+WantedBy=default.target  
+
+
+######################################################################################################################################################################
+
+#Una volta fatto il file Unit:
+
+# 1. Copiare il file nella directory delle unit utente:    es[cp ~/large-file-detector/large-file-detector.service ~/.config/systemd/user/]
+
+# 2. (Opzionale) verificare che il file sia presente:   ls ~/.config/systemd/user/
+
+# 3. Ricaricare systemd dopo creazione/modifica:    systemctl --user daemon-reload
+
+# 4. Verificare che systemd veda la unit:   systemctl --user list-unit-files | grep large-file-detector
+
+# 5. Abilitare il servizio (autostart): systemctl --user enable large-file-detector.service     [Se c'è Bad--> errore nel file tipo sintassi, se c'è disabled--> fare comando per abilitare: systemctl --user enable large-file-detector.service]
+
+# 6. Avviare il servizio:    systemctl --user start large-file-detector.service
+
+# 7. Controllare lo stato:  systemctl --user status large-file-detector.service
+
+# 8. Vedere i log in tempo reale:  journalctl --user -u large-file-detector.service -f
+
+
+
+
+#Ordine:
+    #enable far partire automaticamente il servizio quando parte la sessione utente
+
+    #start avviare il servizio subito
+
+    #status
