@@ -1,0 +1,84 @@
+# nome e cognome: Giuriato Simone
+# matricola: 197169
+#
+# Path del file:
+# ~/.config/systemd/user/log-extractor.service
+#
+# Note:
+# Le directory in cui systemd cerca le unit sono documentate in:
+#   man systemd.unit
+# Per le unità utente si usa:
+#   ~/.config/systemd/user
+# Se non esiste:
+#   mkdir -p ~/.config/systemd/user
+
+[Unit]
+Description=Log extractor service
+# Description: descrizione leggibile del servizio
+
+[Service]
+
+Environment=PYTHONUNBUFFERED=1
+# Environment: imposta variabili d’ambiente
+# PYTHONUNBUFFERED=1 forza Python a stampare subito l’output (utile per i log)
+
+WorkingDirectory=%h/log-extractor
+# WorkingDirectory: directory di lavoro del servizio
+# %h: home dell’utente (es. /home/simone)
+
+ExecStart=/usr/bin/python3 app.py --path %h/docs --pattern ciao
+# ExecStart: comando eseguito dal servizio
+# Usa python3 per eseguire app.py con parametri:
+# --path: directory dei documenti
+# --pattern: stringa da cercare
+
+# ------------------------------------------------------------------------------------
+
+# NOTE:
+# - Questo servizio non va abilitato (enable) perché è pensato
+#   per essere attivato da un timer (.timer)
+#
+# - Stato "static" significa che non ha una sezione [Install]
+#   quindi non può essere abilitato direttamente, ma sarà abilitato da un timer che lo avrà, Il comando enable serve ad abilitare l’avvio automatico di una unit creando un link simbolico verso il target specificato in [Install]. Non avvia la unit immediatamente, ma la rende persistente ai successivi avvii o login.”
+#
+# - Il servizio viene eseguito ogni volta che il timer lo attiva
+
+################################################################################################
+
+# CHECKLIST OPERATIVA
+
+# 1. Copiare il file nella directory delle unit utente:
+#    cp ~/log-extractor/log-extractor.service ~/.config/systemd/user
+
+# 2. Verificare la presenza del file:
+#    ls ~/.config/systemd/user
+
+# 3. Ricaricare systemd dopo creazione/modifica:
+#    systemctl --user daemon-reload
+
+# 4. Verificare che systemd riconosca la unit:
+#    systemctl --user list-unit-files | grep log-extractor.service
+
+# Output atteso:
+# log-extractor.service   static
+# → "static" indica che il servizio esiste ma non è abilitabile (no [Install])
+
+# 5. Avviare manualmente il servizio (test):
+#    systemctl --user start log-extractor.service
+
+# 6. Controllare lo stato:
+#    systemctl --user status log-extractor.service
+# Output tipico:
+# Active: inactive (dead)
+# → normale per servizi oneshot (terminano dopo l’esecuzione)
+
+# 7. Visualizzare i log:
+#    journalctl --user -u log-extractor.service
+
+# 8. Visualizzare i log in tempo reale:
+#    journalctl --user -u log-extractor.service -f
+
+# 9. Debug (in caso di errori):
+#    systemctl --user status log-extractor.service -l
+#    (mostra output completo senza troncamenti)
+

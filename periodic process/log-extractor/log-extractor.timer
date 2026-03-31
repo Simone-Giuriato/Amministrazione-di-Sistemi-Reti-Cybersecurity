@@ -1,0 +1,92 @@
+# nome e cognome: Simone Giuriato
+# matricola: 197196
+#
+# Path del file:
+# ~/.config/systemd/user/log-extractor.timer
+#
+# Comandi principali:
+# Abilitare il timer (avvio automatico al login):
+#   systemctl --user enable log-extractor.timer
+# Avviare manualmente il timer:
+#   systemctl --user start log-extractor.timer
+
+# Obiettivo:
+# Attivare log-extractor.service ogni lunedì e venerdì alle 02:00
+
+[Unit]
+Description=Log extractor timer
+# Description: descrizione leggibile dell’unità timer
+
+[Timer]
+Unit=log-extractor.service
+# Unit: specifica quale service unit viene attivata dal timer
+
+OnCalendar=Mon,Fri 02:00
+# OnCalendar: definisce quando il timer si attiva
+# Formato: GiornoSettimana [Anno-Mese-Giorno] Ora
+# Mon,Fri: esegue il servizio il lunedì e venerdì
+# 02:00: orario di esecuzione
+# Nota: lo spazio tra data e ora è obbligatorio
+# *-*-* (qualsiasi data) può essere omesso → forma più pulita
+
+Persistent=true
+# Persistent: se il sistema era spento all’orario previsto,
+# il servizio viene eseguito al successivo avvio
+
+[Install]
+WantedBy=timers.target
+# WantedBy: collega il timer al target dei timer utente
+# Permette l’attivazione automatica con "enable"
+
+# ------------------------------------------------------------------------------------
+
+# NOTE:
+# - Il timer non esegue direttamente comandi:
+#   attiva la unità log-extractor.service secondo il calendario
+#
+# - Il service associato dovrebbe essere di tipo:
+#   Type=oneshot
+#   (esegue il task e termina)
+#
+# - Le specifier (es. %h, %u) sono usate principalmente nei service,
+#   nei timer sono raramente necessarie
+
+################################################################################################
+
+# CHECKLIST OPERATIVA
+
+# 1. Copiare il file nella directory delle unit utente:
+#    cp ~/log-extractor/log-extractor.timer ~/.config/systemd/user/
+
+# 2. Verificare la presenza del file:
+#    ls ~/.config/systemd/user/
+
+# 3. Ricaricare systemd dopo creazione/modifica:
+#    systemctl --user daemon-reload
+
+# 4. Verificare che systemd riconosca la unit:
+#    systemctl --user list-unit-files | grep log-extractor
+
+# 5. Avviare il timer:
+#    systemctl --user start log-extractor.timer
+
+# 6. Controllare lo stato del timer:
+#    systemctl --user status log-extractor.timer
+
+# 7. Elencare i timer attivi e il prossimo trigger:
+#    systemctl --user list-timers
+
+# 8. Abilitare l’avvio automatico al login:
+#    systemctl --user enable log-extractor.timer
+
+# 9. Test immediato del servizio:
+#    systemctl --user start log-extractor.service
+#    (utile per verificare che il service funzioni correttamente)
+
+# 10. Test rapido del timer (alternativa):
+#     aggiungere temporaneamente:
+#     OnUnitActiveSec=10s
+#     (esegue il servizio ogni 10 secondi)
+
+# 11. Visualizzare i log in tempo reale:
+#     journalctl --user -u log-extractor.service -f
