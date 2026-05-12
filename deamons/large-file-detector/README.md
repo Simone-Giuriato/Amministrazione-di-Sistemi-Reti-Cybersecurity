@@ -94,7 +94,7 @@ Una **unit** è un'entità gestita da systemd. Il suo comportamento è definito 
 Description=Descrizione leggibile del servizio
 
 [Service]
-ExecStart=/path/assoluto/al/programma --argomenti
+ExecStart= /usr/bin/python3 app.py nome (o path programma in python) --argomenti
 Restart=on-failure
 RestartSec=5
 
