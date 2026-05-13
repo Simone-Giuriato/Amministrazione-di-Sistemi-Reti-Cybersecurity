@@ -82,6 +82,9 @@ WantedBy=default.target
 
 # 8. Vedere i log in tempo reale:  journalctl --user -u large-file-detector.service -f
 
+# 9. Finito se si volgiono fare modifiche al service oltre a ricaricare il file occore stoppare il processo in esecuzione: systemctl --user stop large-file-detector.service
+    
+
 
 
 
