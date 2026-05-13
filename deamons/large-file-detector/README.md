@@ -286,7 +286,23 @@ systemctl --user status large-file-detector.service
 
 # 8. Seguire i log in tempo reale
 journalctl --user -u large-file-detector.service -f
+
+
+#QUANDO STARTI UN SERVIZIO MA FAI UNA MODIFICA AL SERVICE, devi ricaricare il service
+
+# 1. Stoppare il servizio:
+     systemctl --user status large-file-detector.service
+# 2.  Ricaricare systemd — OBBLIGATORIO dopo ogni modifica
+     systemctl --user daemon-reload
+
+# 3. Copiare il file unit nella directory corretta
+     cp ~/large-file-detector/large-file-detector.service ~/.config/systemd/user/
+
+# 4. Restart del processo (sarà già stato attivato la prima volta)
+     systemctl --user start large-file-detector.service
+
 ```
+
 
 ### Per testare il riavvio automatico
 
@@ -296,6 +312,9 @@ systemctl --user kill --signal=SIGKILL large-file-detector.service
 
 # Verificare che systemd lo abbia riavviato
 systemctl --user status large-file-detector.service
+
+
+     
 ```
 
 ---
