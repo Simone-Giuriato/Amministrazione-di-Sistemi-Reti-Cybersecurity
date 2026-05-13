@@ -69,7 +69,8 @@ WantedBy=default.target
 
 # 2. (Opzionale) verificare che il file sia presente:   ls ~/.config/systemd/user/
 
-# 3. Ricaricare systemd dopo creazione/modifica:    systemctl --user daemon-reload
+# 3. Ricaricare systemd dopo creazione/modifica:    systemctl --user daemon-reload e systemctl --user restart large-file-detector.service
+    
 
 # 4. Verificare che systemd veda la unit:   systemctl --user list-unit-files | grep large-file-detector
 
