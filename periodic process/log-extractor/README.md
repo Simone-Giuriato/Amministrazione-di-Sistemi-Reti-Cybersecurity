@@ -139,7 +139,7 @@ ExecStart=/usr/bin/python3 app.py --path %h/logs --pattern ERROR
 | `weekly` | Ogni lunedì alle 00:00 |
 | `monthly` | Il 1° del mese alle 00:00 |
 | `*:0/10` | Ogni 10 minuti |
-| `Mon..Fri *-7-4 12:30:00` | 4 luglio di ogni anno alle 12:30, solo lun–ven |
+| `Mon..Fri *-7-4 12:30:00` | 4 luglio di ogni anno alle 12:30, dal lun–ven |
 
 ### Verifica della sintassi prima di distribuire
 
