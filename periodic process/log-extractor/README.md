@@ -322,7 +322,7 @@ systemctl --user daemon-reload
 # 4. Verificare che systemd veda le unit
 systemctl --user list-unit-files | grep log-extractor
 # service → static (corretto, non ha [Install])
-# timer   → disabled (da abilitare)
+# timer   → disabled (da abilitare)    [nel caso da abilitare con systemctl --user status log-extractor.timer]
 
 # 5. Avviare e testare il service manualmente
 systemctl --user start log-extractor.service
