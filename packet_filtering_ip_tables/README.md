@@ -619,20 +619,6 @@ Leggi il requisito → Chiedi: chi parla con chi?
 
 ---
 
-### 10.5 Comandi di verifica rapida
 
-```bash
-# Visualizza tutte le regole filter con policy
-iptables -L -v --line-numbers
-
-# Visualizza tutte le regole nat
-iptables -t nat -L -v --line-numbers
-
-# Formato script (utile per confronto)
-iptables -S
-iptables -t nat -S
-```
-
----
 
 *Riferimenti: iptables(8), iptables-extensions(8) — `man 8 iptables`*
