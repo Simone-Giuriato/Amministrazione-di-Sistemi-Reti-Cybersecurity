@@ -1,0 +1,46 @@
+#nome e cognome: Giuraito Simone
+#Matricola:
+
+#COMANDO MAN: man iptables, man iptables-extensions
+#IMMAGINA:   {rete privata} eth1 del firewall |||{FIREWALL}||| eth0 del firewall {rete pubblica}
+
+#Svuota tutte le regole esistenti
+iptables -F  #di default ho tabella filter
+iptables -t nat -F
+
+#Scarta tutto ciò che non è esplicitamente consentito (policy non serve -j)
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+
+#Consenti i pacchetti ICMP ricevuti su eth1
+iptables -A INPUT -i eth1 -p icmp -j ACCEPT
+
+
+#Consenti i pacchetti SSH ( tcp/22 ) ricevuti su eth1
+iptables -A INPUT -i eth1 -p tcp --dport 22 -j ACCEPT
+
+
+#Consenti i pacchetti HTTP ( tcp/80 ) e HTTPS ( tcp/443 ) ricevuti su eth0 e eth1
+iptables -A FORWARD -i eth0 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -i eth0 -p tcp --dport 443 -j ACCEPT
+iptables -A FORWARD -i eth1 -p tcp --dport 80 -j ACCEPT
+iptables -A FORWARD -i eth1 -p tcp --dport 443 -j ACCEPT
+
+#Consenti i pacchetti con stato ESTABLISHED,RELATED
+iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT    #ricordare a memoria
+
+#MASQUERADE i pacchetti in uscita da eth0 affinché gli host privati ricevano risposte da Internet 
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE    #MASQUERADE è SNAT dinamica e quindi non ha bisogno di specifare un ip
+
+
+#DNAT per i pacchetti HTTP ( tcp/80 ) ricevuti su eth0 , inoltrandoli a 10.20.30.100:8080 e assicurandosi che possano raggiungere quell'host
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 10.20.30.100:8080  #-i eth0 → pacchetti HTTP che arrivano da Internet, li mando al server interno 
+iptables -A FORWARD -i eth0 -o eth1 -p tcp --dport 8080 -d 10.20.30.100 -j ACCEPT   #-i eth0 → entra da Internet, -o eth1 → esce verso LAN, con quella destinazione, li permetto
+
+#DNAT per i pacchetti HTTPS ( tcp/443 ) ricevuti su eth0 , inoltrandoli a 10.20.30.100:8443 e assicurandosi che possano raggiungere quell'host
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 443 -j DNAT --to-destination 10.20.30.100:8443
+iptables -A FORWARD -i eth0 -o eth1 -p tcp --dport 8443 -d 10.20.30.100 -j ACCEPT   #i pkt hhtp che entrano nel firewall in eth0 (arrivano da pubblica) ed escono da eth1 (vanno verso la privata) con quell'ip destinazione e nuova porta li lasci andare
+
+
+
