@@ -1,0 +1,47 @@
+# first name and last name: Giuriato Simone
+# student id:
+#
+# path:/etc/sudoers.d/local
+
+#Riga tipica di sudoers:
+#<chi> <dove/in che macchina/host> = (<come utente target, se non metto è root>) [NOPASSWD:] <cosa/comandi>
+
+#Definizione di un Alias (soprannome) che raggruppa più host
+Host_Alias WEB= web01, web02
+Host_Alias DB= db01, db02
+
+#Definisco un Alias di comandi (raggruppo più comandi sotto unico nome) [posso fare alias di host,comandi,utenti, utenti target]
+Cmnd_Alias SHELLS = /bin/sh, /bin/dash, /bin/bash
+Cmnd_Alias USERMGM = /usr/sbin/useradd, /usr/sbin/userdel, /usr/sbin/usermod
+Cmnd_Alias PKGINFO = /usr/bin/dpkg
+
+#alice può eseguire qualsiasi comando come qualsiasi utente su qualsiasi host
+alice      ALL = (ALL) ALL
+
+#bob può eseguire qualsiasi comando come qualsiasi utente su qualsiasi host, eccettoSHELLS
+bob        ALL = (ALL) ALL, !SHELLS
+
+#%ops può eseguire  USERMGM come rootsuWEB {se non metto nulla tra () intendo root}
+%ops        WEB = USERMGM
+
+#%devs può essere eseguito PKGINFOcome rootsu DB, senza password
+%devs       DB= NOPASSWD: PKGINFO
+
+#carol può eseguire /usr/bin/cat /etc/shadowsu root qualsiasi host, senza password
+carol       ALL= NOPASSWD: /usr/bin/cat /etc/shadowsu
+
+#dave può eseguire /usr/bin/id come nobody su DB (nobody è utente speciale con privilegi minimi, per processi isolati e sicuri)
+dave        DB= (nobody) /usr/bin/id        
+
+#%ops, %devspuò essere eseguito /usr/sbin/rebootsu rootqualsiasi host, senza password
+%ops, %devs ALL= NOPASSWD: /usr/sbin/rebootsu
+
+
+
+
+
+
+
+
+
+
