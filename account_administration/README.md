@@ -57,14 +57,14 @@ Gli alias sono "scorciatoie" per evitare di ripetere liste lunghe. Esistono quat
 La forma generale è:
 
 ```
-<chi>    <dove> = (<come_chi>) [NOPASSWD:] <cosa>
+<chi>    <dove> = (<utente_target[:gruppo_target]>) [NOPASSWD:] <cosa>
 ```
 
 | Campo | Significato | Esempio |
 |-------|-------------|---------|
 | `<chi>` | utente o `%gruppo` | `alice`, `%ops` |
 | `<dove>` | hostname o alias | `ALL`, `WEB`, `db01` |
-| `(<come_chi>)` | utente target (opzionale, default: `root`) | `(ALL)`, `(nobody)`, omesso |
+| `(<utente_target[:gruppo_target]>)` | utente target (opzionale, default: `root`) | `(ALL)`, `(nobody)`, omesso |
 | `NOPASSWD:` | esegue senza richiedere password | facoltativo |
 | `<cosa>` | comando/i o alias | `ALL`, `SHELLS`, `/usr/bin/id` |
 
