@@ -57,7 +57,7 @@ Gli alias sono "scorciatoie" per evitare di ripetere liste lunghe. Esistono quat
 La forma generale è:
 
 ```
-<chi>    <dove> = (<utente_target[:gruppo_target]>) [NOPASSWD:] <cosa>
+<chi>    <dove> = (<utente_target[:%gruppo_target]>) [NOPASSWD:] <cosa>
 ```
 
 | Campo | Significato | Esempio |
