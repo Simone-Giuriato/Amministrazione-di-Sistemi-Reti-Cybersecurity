@@ -57,7 +57,23 @@ Gli alias sono "scorciatoie" per evitare di ripetere liste lunghe. Esistono quat
 La forma generale è:
 
 ```
-<chi>    <dove> = (<utente_target[:%gruppo_target]>) [NOPASSWD:] <cosa>
+<chi>    <dove> = (<utente_target[:gruppo_target]>) [NOPASSWD:] <cosa>
+
+ES: qualsiasi comando come qualsiasi utente/gruppo su qualsiasi host--> alice ALL = (ALL:ALL) ALL
+
+ATTENZIONE!
+In sudoers la parte tra parentesi è:
+
+(runas_user:runas_group)
+
+Quindi puoi avere:
+
+(ALL) → qualsiasi utente
+(root) → solo root
+(:devs) → qualsiasi utente del gruppo devs
+(root:devs) → utente + gruppo 
+
+👉 Ma non esiste la forma (utente:%devs) come combinazione valida/utile in quel contesto [non ci va il %]
 ```
 
 | Campo | Significato | Esempio |
