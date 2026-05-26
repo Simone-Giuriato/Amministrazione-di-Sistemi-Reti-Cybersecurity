@@ -70,10 +70,10 @@ In sudoers la parte tra parentesi è:
 
 Quindi puoi avere:
 
-(ALL) → qualsiasi utente
-(root) → solo root
-(:devs) → qualsiasi utente del gruppo devs
-(root:devs) → utente + gruppo 
+- (ALL) → qualsiasi utente
+- (root) → solo root
+- (:devs) → qualsiasi utente del gruppo devs
+- (root:devs) → utente + gruppo 
 
 👉 Ma non esiste la forma (utente:%devs) come combinazione valida/utile in quel contesto [non ci va il %]
 
