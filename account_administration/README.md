@@ -59,6 +59,8 @@ La forma generale è:
 ```
 <chi>    <dove> = (<utente_target[:gruppo_target]>) [NOPASSWD:] <cosa>
 
+
+```
 ES: qualsiasi comando come qualsiasi utente/gruppo su qualsiasi host--> alice ALL = (ALL:ALL) ALL
 
 ATTENZIONE!
@@ -74,7 +76,6 @@ Quindi puoi avere:
 (root:devs) → utente + gruppo 
 
 👉 Ma non esiste la forma (utente:%devs) come combinazione valida/utile in quel contesto [non ci va il %]
-```
 
 | Campo | Significato | Esempio |
 |-------|-------------|---------|
