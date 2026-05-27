@@ -1,0 +1,30 @@
+# first and last name: Simone Giuriato
+# student id: 123456
+
+
+iptables -F
+iptables -t nat -F
+
+#filter	INPUT,FORWARD	Scarta tutto a meno che non sia esplicitamente permesso
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+#filter	INPUT	Consenti pacchetti ICMP ricevuti su eth1
+iptables -A INPUT -i eth1 -p icmp -j ACCEPT
+
+#filter	INPUT	Consenti pacchetti SSH (tcp/22) ricevuti su eth1 e provenienti esclusivamente dall'host amministrativo 10.0.0.100
+iptables -A INPUT -i eth1 -p tcp --dport 22 -s 10.0.0.100 -j ACCEPT
+
+#filter	FORWARD	Consenti tutti i pacchetti ricevuti su eth1 e in uscita su eth0
+iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
+
+#filter	FORWARD	Consenti pacchetti con stato ESTABLISHED,RELATED
+iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+#nat	POSTROUTING	SNAT per i pacchetti in uscita su eth0 affinché gli host privati ricevano risposte da Internet
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 203.0.113.10
+
+
+#nat	PREROUTING	DNAT per i pacchetti HTTPS (tcp/443) ricevuti su eth0, inoltrandoli a 10.0.0.50:8443 e assicurandoti che possano raggiungere quell'host
+iptables -t nat -A PREROUTING -p tcp --dport 443 -i eth0 -j DNAT --to-destination 10.0.0.50:8443
+iptables -A FORWARD -i eth0 -o eth1 -p tcp --dport 8443 -d 10.0.0.50 -j ACCEPT

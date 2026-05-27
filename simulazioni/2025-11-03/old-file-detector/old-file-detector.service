@@ -1,0 +1,26 @@
+# nome e cognome: Giuriato Simone
+# matricola: 
+#
+# path: ~/old-file-detector/old-file-detector.service
+# 
+# comando per abilitare il service: systemctl --user enable old-file-detector.service
+# comando per avviare il service: systemctl --user start old-file-detector.service
+
+
+[Unit]
+Description=old-file-detector.service
+
+
+[Service]
+Environment=PYTHONUBUFFERED=1
+
+WorkingDirectory= %h/old-file-detector
+
+ExecStart=/usr/bin/python3 app.py --target %h/archive --days 30 --interval 60 --log %h
+
+Restart=on-failure
+RestartSec=5
+
+
+[Install]
+WantedBy=default.target
