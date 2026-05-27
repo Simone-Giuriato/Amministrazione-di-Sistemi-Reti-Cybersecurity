@@ -72,8 +72,13 @@ Quindi puoi avere:
 
 - (ALL) → qualsiasi utente
 - (root) → solo root
-- (:devs) → qualsiasi utente del gruppo devs
-- (root:devs) → utente + gruppo 
+- (:devs) → qualsiasi utente del gruppo devs [è uguale alla versione più leggibile (ALL:devs)
+- (utente:devs) → utente + gruppo
+
+- ES. filippo può eseguire qualsiasi comando come root oppure come qualsiasi utente del gruppo webops su qualsiasi host, eccetto comando SHELLS [noto la congiunzione "oppure" spezzo in 2 righe]
+  -filippo ALL = (ALL:webops) ALL, !SHELLS
+  -filippo ALL,!DB =(root) ALL 
+  
 
 👉 Ma non esiste la forma (utente:%devs) come combinazione valida/utile in quel contesto [non ci va il %]
 
