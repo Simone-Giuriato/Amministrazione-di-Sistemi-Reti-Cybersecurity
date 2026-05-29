@@ -1,0 +1,21 @@
+#Nome e Cognome: Simone Giuriato
+#matricola 
+iptables -F
+iptables -t nat -F
+
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+iptables -A INPUT -p tcp --dport 22 -i eht1 -s 172.16.0.50 -j ACCEPT
+
+iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT
+
+iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 192.0.2.5
+
+iptables -t nat -A PREROUTING -i eth0 -p udp --dport 53 -j DNAT --to-destination 172.16.0.30:5353
+iptables -A FORWARD -i eth0 -o eth1 -d 172.16.0.30 -p udp --dport 5353 -j ACCEPT
+
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j DNAT --to-destination 172.16.0.30:8080
+iptables -A FORWARD -i eth0 -o eth1 -d 172.16.0.30 -p tcp --dport 8080 -j ACCEPT

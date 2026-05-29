@@ -1,0 +1,18 @@
+# nome e cognome:Simone Giuriato
+# matricola:
+#
+# path: %h/.config/systemd/user/file-compressor.timer
+#
+# comando per abilitare il timer: systemctl --user enable file-compressor.timer
+# comando per avviare il timer: systemctl --user start file-compressor.timer
+
+
+[Unit]
+Description= file-compressor-timer
+
+[Timer]
+Unit=file-compressor.service
+OnCalendar=Mon,Thu *-*-* 02:00
+
+[Install]
+WantedBy=timers.target
