@@ -1,6 +1,6 @@
-#nome e cognome: SImone Giuriato
-#matricola
-#path: $HOME/dire-size-monitor/app.py
+#nome e cognome:Simone Giuriato
+#matricola:
+#path: $HOME/dir-size-monitor/app.py
 
 import argparse
 from datetime import datetime
@@ -19,10 +19,6 @@ def walk(path_target):  #l'obiettivo è calcolare solo grandezza direcotry princ
     return counter
 
     
-            
-            
-
-
 def main():
     parser=argparse.ArgumentParser('dir-size-monitor')
 
@@ -89,8 +85,6 @@ def main():
                 log_file.write(f"{datetime.now()} {size}\n")
             print(f"Grandezza totale:{size}")
         time.sleep(args.interval)
-
-
 
 
 if __name__ == "__main__":
