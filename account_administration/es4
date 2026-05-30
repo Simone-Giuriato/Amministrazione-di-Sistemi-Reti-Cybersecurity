@@ -1,0 +1,25 @@
+#Esercizio del 5 del MIO file "esercizi-account-administration.pdf" su esercitazioni di account Administration
+
+#NON BASARSI SULLA SOLUZIONE DEL PDF CHE CONTIENE QUALCHE PICCOLO ERRORE GENERATO DALL'AI
+
+#path: /etc/sudoers.d/es4
+
+Host_Alias COMPUTE = compute01, compute02
+
+Cmnd_Alias SHELLS = /bin/sh, /bin/dash, /bin/bash
+Cmnd_Alias USERMGM= /usr/sbin/useradd, /usr/sbin/userdel, /usr/sbin/usermod
+Cmnd_Alias BACKUP= /usr/bin/rsync, /usr/bin/tar
+
+anna ALL = (ALL:ALL) ALL
+
+pietro ALL = (ALL) ALL, !SHELLS
+
+%sysops COMPUTE= (root) USERMGM
+
+%audit archive01 = (root) NOPASSWD: BACKUP
+
+valeria ALL = (root) NOPASSWD: /usr/bin/top
+
+roberto mgmt01= (root) /usr/bin/last
+
+%sysops, %audit ALL = (root) NOPASSWD: /usr/sbin/reboot

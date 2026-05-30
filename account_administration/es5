@@ -1,0 +1,31 @@
+#Esercizio del 5 del MIO file "esercizi-account-administration.pdf" su esercitazioni di account Administration
+
+#NON BASARSI SULLA SOLUZIONE DEL PDF CHE CONTIENE QUALCHE PICCOLO ERRORE GENERATO DALL'AI
+
+# path:/etc/sudoers.d/es5
+#comando utile per sintassi: visudo -c -f /path/file
+
+Host_Alias FE =fe01, fe02
+Host_Alias BE =be01, be02
+
+Cmnd_Alias SHELLS= /bin/sh, /bin/bash, /bin/dash
+Cmnd_Alias NETMGM= /usr/bin/ss, /usr/bin/ip
+Cmnd_Alias LOGREADERS= /usr/bin/tail, /usr/bin/grep, /usr/bin/less
+
+sofia ALL = (ALL:ALL) ALL
+
+lorenzo ALL = (ALL) ALL, !SHELLS
+
+%frontend FE = (root) NETMGM
+
+%backend BE = (root) NETMGM
+
+%audit ALL = (ALL:audit) NOPASSWD: LOGREADERS
+
+martina BE = (www-data:www-data) /usr/bin/curl
+
+giacomo FE = (root) NOPASSWD: /usr/bin/systemctl status
+
+beatrice admin01 = /usr/sbin/useradd
+
+%fronted, %backend ALL = NOPASSWD: /user/sbin/reboot
