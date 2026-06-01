@@ -1,0 +1,14 @@
+#nome e cognome: Giuriato Simone
+#matricola:
+
+#path:~/.config/systemd/user/log-extractor.service
+
+[Unit]
+Description= log extractor service
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+
+WorkingDirectory=%h/log-extractor/
+
+ExecStart= /user/bin/python3 app.py --path %h/docs --pattern ERROR

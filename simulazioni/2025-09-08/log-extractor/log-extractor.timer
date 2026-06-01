@@ -1,0 +1,18 @@
+#nome e cognome: Giuraito Simone
+
+#matrciola:
+
+#path: ~/.config/systemd/user/log-extractor.timer
+
+#comando per abilitare il timer: systemctl --user enable log-extractor.timer
+#comando per avviare il timer: systemctl --user start log-extractor.timer
+
+[Unit]
+Description=log extractor timer
+
+[Timer]
+Unit=log-extractor.service
+OnCalendar= Mon,Fri *-*-* 02:00
+
+[Install]
+WantedBy=timers.target
