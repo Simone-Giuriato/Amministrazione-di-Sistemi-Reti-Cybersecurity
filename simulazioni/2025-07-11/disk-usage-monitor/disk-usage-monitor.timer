@@ -1,0 +1,20 @@
+#nome e cognome: Simone Giuriato
+#matricola:
+
+#path: %h/.config/systemd/user/disk-usage-monitor.timer
+
+#comando per abilitare il timer: systemctl --user enable disk-usage-monitor.timer
+#comando per avviare il timer: systemctl --user start disk-usage-monitor.timer
+
+
+[Unit]
+Description=disk-usage-monitor-timer
+
+[Timer]
+Unit= disk-usage-monitor.service
+
+#gni 2 min
+OnCalendar=*-*-* *:0/2:00   
+
+[Install]
+WantedBy=timers.target
