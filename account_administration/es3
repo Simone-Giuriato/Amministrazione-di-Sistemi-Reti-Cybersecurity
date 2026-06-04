@@ -1,0 +1,25 @@
+#nome e cognome: Giuriato Simone
+
+#path: /etc/sudoers.d/es3
+
+Host_Alias APP= app01, app02, app03
+Host_Alias DB = db01, db02
+
+Cmnd_Alias SHELLS= /bin/sh, /bin/dash, /bin/bash
+Cmnd_Alias WEBCTL = /usr/bin/systemctl start nginx, /usr/bin/systemctl stop nginx, /usr/bin/systemctl restart nginx
+Cmnd_Alias DBTOOLS= /usr/bin/mysql, /usr/bin/mysqldump
+
+elena ALL = (ALL:ALL) ALL 
+
+filippo ALL = (root) ALL, !SHELLS
+filippo ALL = (ALL:webops) ALL, !SHELLS
+
+%webops APP = (root) WEBCTL
+
+%dba DB = (mysql:mysql) NOPASSWD: DBTOOLS
+
+chiara APP = (root) NOPASSWD: /usr/bin/cat /var/log/nginx.error.log
+
+matteo DB = (ALL:dba) /usr/bin/id
+
+%webops, %dba ALL = (root) NOPASSWD: /usr/sbin/reboot

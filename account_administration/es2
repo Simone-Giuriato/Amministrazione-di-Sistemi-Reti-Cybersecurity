@@ -1,0 +1,24 @@
+#nome e cognome: Giuriato Simone
+
+#path: /etc/sudoers.d/es2
+
+Host_Alias MON = mon01, mon02 
+Host_Alias STOR = stor01, stor02, stor03
+
+Cmnd_Alias SHELLS = /bin/sh, /bin/dash, /bin/bash
+Cmnd_Alias NETMON = /usr/bin/ss, /usr/bin/netstat
+Cmnd_Alias DISK = /usr/bin/df, /usr/bin/du, /usr/sbin/fdisk
+
+luca ALL = (ALL:ALL) ALL
+
+sara ALL = (ALL) ALL, !SHELLS
+
+%monitor MON = (ALL:monitor) NETMON
+
+%storage STOR = (root) NOPASSWD: DISK
+
+marco ALL = (root) NOPASSWD: /usr/bin/tail -f /var/log/auth.log
+
+giulia STOR = (backup:storage) /usr/bin/rsync
+
+%monitor, %storage ALL = (root) NOPASSWD: /usr/sbin/shutdown -h now
