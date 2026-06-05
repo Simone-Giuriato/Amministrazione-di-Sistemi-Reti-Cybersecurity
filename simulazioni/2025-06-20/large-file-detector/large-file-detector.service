@@ -1,0 +1,27 @@
+# nome e cognome: Giuriato Simone
+#matricola:
+
+#path: ~/.config/systemd/user/large-file-detector.service
+
+#comando per abilitare il service: systemctl --user enable large-file-detector.service
+#comando per avviare il service: systemctl --user start large-file-detector.service
+
+
+[Unit]
+Description= large-file-detector-service
+
+
+[Service]
+
+Envirnoment=PYTHONUNBUFFERED=1
+
+WorkingDirectory=%h/large-file-detector/
+
+ExecStart=/usr/bin/python3 app.py --target %h/docs --size 100 --interval 300 --log %h
+
+Restart= on-failure
+
+RestartSec= 5
+
+[Install]
+WantedBy=default.target
