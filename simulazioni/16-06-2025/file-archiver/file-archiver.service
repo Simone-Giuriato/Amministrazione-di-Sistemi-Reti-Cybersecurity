@@ -1,0 +1,14 @@
+#nome e cognome: Giuriato Simone
+#matricola:
+
+#path: ~/.config/systemd/user/file-archiver.service
+
+[Unit]
+Description=file-archiver-service
+
+[Service]
+Environment=PYTHONUNBUFFERED=1
+WorkingDirectory=%h/file-archiver
+ExecStart=/usr/bin/python3 app.py --path %h/target --seconds 30
+
+

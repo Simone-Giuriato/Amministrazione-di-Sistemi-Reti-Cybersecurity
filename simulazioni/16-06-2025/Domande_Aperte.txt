@@ -1,0 +1,26 @@
+#nome e cognome:
+#matricola:
+
+1) Un umount -l è considerato non sicuro poichè introduce semantiche inconsistenti
+    e non garantisce che i file aperti (nel file system da smontare) vengano mai chiusi.
+    Per identificare i processi che tengono occupato il file system si può utilizzare il comando: fuser -m 
+
+    Uno smontaggio pulito è possibile attraveros l'individuazione dei processi che mantengono ancora riferimenti attivi
+    nel file system e quindi la loro chiusara, inoltre chiudendo i file ancora aperti e quindi eseguendo uno umount standard.
+
+2)Una vulnerabilità software è un difetto o errore in fase di progettazione/implemnetazione del software,
+    il quale può portare a situazioni sgradevoli come un attacco da un malintenzionato.
+
+    Un esempio specifico di vulnerabilità è il buffer overflow, che consiste nel scrivere dati in memoria più di quanti
+    dati la memoria stessa sia in grado di ricevere, andando a sovrascrivere la memoria adiacente eseguendo codice inconsistente.
+
+    Le pratiche di revisione di codice open-source possono mitigare la presenza di vulnerabilità poichè vi è una maggiore visione da parte di più persone,
+    che potrebbero individuare criticità e vulnerabilità, prima che queste possano essere sfruttate dagli attaccanti
+
+3) La crittografia a chiave simmetrica è un sistema di cifratura della comunicazione che si basa su una sola chiave (segreta) condivisa.
+    Si utilizza la stessa chiave per cifrare e per decifrare il pacchetto, rendendolo non capibile ai non autorizzati
+    Bob cifra con la chiave il messaggio, Alice lo decifra con la stessa chiave
+
+    I vantaggi sono una miglior efficienza e velocità computazionale con payload più snelli e di minor dimensione
+    LO svantaggio è la criticità in fase di distribuzione, poichè lo scambio della chiave non deve essere intercettato da terzi.
+    Qual'ora lo fosse, l'intera comunicazione non è più sicura andando contro i pilastri della CIA (Confidentiality, Integrity, Availability)
